@@ -1,4 +1,16 @@
-## Build docker
+# Train Embodiedscan with Scannet++ Dataset
+## 1. Prep data
+- Move data to data/
+```
+data/
+├── data
+├── occupancy_2x
+├── README.md
+├── render_orgpose
+├── scannetpp_infos_2x_train.pkl
+├── scannetpp_infos_2x_val.pkl
+```
+## 2. Build Docker Image
 
 ```bash
 docker build -t embodiedscan:test docker
@@ -25,7 +37,7 @@ docker stop embodiedscan
 docker rm embodiedscan
 ```
 
-## Train
+## 3. Train
 ```bash
 docker run -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$(DISPLAY) -e USER=$(USER) \
 	-e runtime=nvidia -e NVIDIA_DRIVER_CAPABILITIES=all -e NVIDIA_VISIBLE_DEVICES=all \
