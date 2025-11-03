@@ -1,3 +1,11 @@
+draft/
+demo/sample_data/
+data/matterport3d/
+data/occupancy_2x/
+data/occupancy/
+data/render_orgpose/
+data/data/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
