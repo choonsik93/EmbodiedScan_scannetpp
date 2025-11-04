@@ -27,6 +27,16 @@ build-image:
 	docker build --build-arg USE_CUDA=$(USE_CUDA) \
 	--build-arg TORCH_ARCH=$(TORCH_CUDA_ARCH_LIST) \
 	-t embodiedscan:latest .
+	docker run -d --gpus all -it --rm --net=host \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
+	-v "${PWD}":/home/appuser/EmbodiedScan \
+	-w /home/appuser/EmbodiedScan \
+	-e DISPLAY=$(DISPLAY) \
+	--name=embodiedscan \
+	--ipc=host embodiedscan:latest
+	docker exec -it embodiedscan sh -c "pip install --no-cache-dir --no-build-isolation -U git+https://github.com/NVIDIA/MinkowskiEngine --no-deps"
+	docker commit embodiedscan embodiedscan:latest
+	docker stop embodiedscan
 
 run:
 	docker run -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$(DISPLAY) -e USER=$(USER) \

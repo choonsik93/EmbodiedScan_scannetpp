@@ -38,15 +38,14 @@ RUN pip install "mmsegmentation>=1.0.0,<1.3.0"
 
 RUN pip install -U cmake ninja
 
-ARG TORCH_ARCH
-ENV TORCH_CUDA_ARCH_LIST="${TORCH_ARCH}"
 ENV CUDA_HOME=/usr/local/cuda
-ENV FORCE_CUDA=1
+ENV PATH=/usr/local/cuda-11.8/bin:$PATH
+ENV LD_LIBRARY_PATH=/usr/local/cuda-11.8/lib64:/lib64:$LD_LIBRARY_PATH
 
 # Source build
 RUN pip install --no-cache-dir --no-build-isolation git+https://github.com/mit-han-lab/torchsparse@v1.4.0
 RUN pip install --no-cache-dir --no-build-isolation "git+https://github.com/facebookresearch/pytorch3d.git"
-RUN pip install --no-cache-dir --no-build-isolation -U git+https://github.com/NVIDIA/MinkowskiEngine --no-deps
+# RUN pip install --no-cache-dir --no-build-isolation -U git+https://github.com/NVIDIA/MinkowskiEngine --no-deps
 
 RUN pip install ftfy regex numba transformers==4.37.2
 
