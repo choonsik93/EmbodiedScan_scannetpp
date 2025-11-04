@@ -254,14 +254,15 @@ class Pack3DDetInputs(BaseTransform):
                 elif key == 'gt_occupancy':
                     data_sample.gt_occupancy = to_tensor(
                         results['gt_occupancy'])
-                    if isinstance(results['gt_occupancy_masks'], list):
-                        data_sample.gt_occupancy_masks = [
-                            to_tensor(mask)
-                            for mask in results['gt_occupancy_masks']
-                        ]
-                    else:
-                        data_sample.gt_occupancy_masks = to_tensor(
-                            results['gt_occupancy_masks'])
+                    # if isinstance(results['gt_occupancy_masks'], list):
+                    #     data_sample.gt_occupancy_masks = [
+                    #         to_tensor(mask)
+                    #         for mask in results['gt_occupancy_masks']
+                    #     ]
+                    # else:
+                    #     data_sample.gt_occupancy_masks = to_tensor(
+                    #         results['gt_occupancy_masks'])
+                    masks = results.get('gt_occupancy_masks', None)
                 else:
                     raise NotImplementedError(f'Please modified '
                                               f'`Pack3DDetInputs` '

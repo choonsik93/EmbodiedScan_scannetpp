@@ -222,13 +222,8 @@ class Scannetpp2xDataset(BaseDataset):
         #         cls_id = 255
         #     gt_occ[i][3] = cls_id
         gt_occ = gt_occ.astype(np.int64)
+        ann_info['gt_occupancy'] = gt_occ
 
-        gt_occ_grid = np.zeros((240, 240, 80), dtype=np.int64)
-        for occ in gt_occ:
-            x, y, z, cls = occ
-            gt_occ_grid[x, y, z] = cls
-        
-        ann_info['gt_occupancy'] = gt_occ_grid
         # For debugging
         # ann_info['gt_occupancy'] = np.ones((160, 160, 64), dtype=np.int64)
 
@@ -265,19 +260,20 @@ class Scannetpp2xDataset(BaseDataset):
 
         # ann_info['visible_occupancy_masks'] = None
         
-        with open(mask_filename, "rb") as f:
-            sparse_visible_occupancy = pickle.load(f)
+        # with open(mask_filename, "rb") as f:
+        #     sparse_visible_occupancy = pickle.load(f)
 
-        grid = tuple(self.metainfo.get('occ_grid_shape', (60, 60, 20)))
+        # grid = tuple(self.metainfo.get('occ_grid_shape', (60, 60, 20)))
         
-        ann_info['visible_occupancy_masks'] = []
-        for i in range(len(info['images'])):
-            vis_occ_grid = np.zeros(grid, dtype=bool)
-            for coord in sparse_visible_occupancy[i]['visible_occupancy']:
-                x, y, z = coord
-                vis_occ_grid[x, y, z] = True
-            ann_info['visible_occupancy_masks'].append(vis_occ_grid)
+        # ann_info['visible_occupancy_masks'] = []
+        # for i in range(len(info['images'])):
+        #     vis_occ_grid = np.zeros(grid, dtype=bool)
+        #     for coord in sparse_visible_occupancy[i]['visible_occupancy']:
+        #         x, y, z = coord
+        #         vis_occ_grid[x, y, z] = True
+        #     ann_info['visible_occupancy_masks'].append(vis_occ_grid)
 
+        ann_info['visible_occupancy_masks'] = None
 
         ann_info['gt_bboxes_3d'] = self.box_type_3d(
             ann_info['gt_bboxes_3d'],

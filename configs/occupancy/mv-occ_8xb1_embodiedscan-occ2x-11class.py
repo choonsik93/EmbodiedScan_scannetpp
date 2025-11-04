@@ -42,21 +42,20 @@ model = dict(
                  n_blocks=[1, 1, 1]),
     bbox_head=dict(
         type='ImVoxelOccHead',
-        volume_h=[20, 10, 5],
-        volume_w=[20, 10, 5],
-        volume_z=[8, 4, 2],
-        num_classes=81,  # TO Be changed
+        volume_h=240,
+        volume_w=240,
+        volume_z=80,
+        num_classes=12,  # TO Be changed
         in_channels=[128, 128, 128],
-        use_semantic=True),
+        up_ratio=4),
     prior_generator=prior_generator,
-    # n_voxels=[40, 40, 16],  # voxel_size=(.16, .16, .16)
-    n_voxels=[60, 60, 20],  # voxel_size=(.16, .16, .16)
+    n_voxels=[60, 60, 20],  
     coord_type='DEPTH',
 )
 
 # dataset_type = 'EmbodiedScanDataset'
 dataset_type = 'Scannetpp2xDataset'
-data_root = 'data'
+data_root = '/data'
 class_names = ('ceiling', 'floor', 'wall', 'window', 'chair', 'bed', 'sofa',
                'table', 'tv', 'furniture', 'objects')
 metainfo = dict(classes=class_names,
@@ -67,9 +66,9 @@ backend_args = None
 train_pipeline = [
     dict(type='LoadAnnotations3D',
          with_occupancy=True,
-         with_visible_occupancy_masks=True),
+         with_visible_occupancy_masks=False),
     dict(type='MultiViewPipeline',
-         n_images=10,
+         n_images=1,
          transforms=[
              dict(type='LoadImageFromFile', backend_args=backend_args),
              dict(type='LoadDepthFromFile', backend_args=backend_args),
@@ -89,9 +88,9 @@ train_pipeline = [
 test_pipeline = [
     dict(type='LoadAnnotations3D',
          with_occupancy=True,
-         with_visible_occupancy_masks=True),
+         with_visible_occupancy_masks=False),
     dict(type='MultiViewPipeline',
-         n_images=20,
+         n_images=1,
          ordered=True,
          transforms=[
              dict(type='LoadImageFromFile', backend_args=backend_args),
